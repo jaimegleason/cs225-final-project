@@ -1,3 +1,5 @@
 # cs225-final-project
 
-#Instructions:
+src: graph.h and graph.cpp
+main: main.cpp to call/test code
+
