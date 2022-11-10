@@ -3,6 +3,5 @@
 src: graph.h and graph.cpp
 main: main.cpp to call/test code
 
-HOW TO RUN
-
+HOW TO RUN:
 make exec
