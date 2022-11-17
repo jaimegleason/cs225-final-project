@@ -1,5 +1,5 @@
 //main file to call code 
-#include "graph.h"
+#include "../src/graph.h"
 
 int main() {
     //test file read, change one and two to file paths
@@ -7,7 +7,7 @@ int main() {
     string department_file = "../email-data/email-Eu-core-department-labels.txt";
     
     //construct a graph with data
-    Graph g = Graph(email_file, department_file);
+    Graph g (email_file, department_file);
 
     
     return 0;

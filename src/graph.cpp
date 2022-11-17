@@ -53,55 +53,54 @@ void Graph::insertNode(int user, int dep) {
 */
 void Graph::insertEdge(int user1, int user2) {
     // check if nodes exist
-    
     if (network.find(user1) == network.end()) {
         return;
     }
-    // if not, call insertNode
     vector<int> connections = network[user1];
     // maybe check for multiple instances? 
     connections.push_back(user2);
 }
 
 /**
-* @return the number of connected components 
+* BFS traversal, will count number of connected components based on department ID
 * @param depID department ID
 * @return number of connected components
 */
 int Graph::BFS(int depID) {
     int connected_counter = 0;
-    set<int> visited;
-    queue<int> q;
-    return 0;
+    set<int> vertices;
+    set<pair<int, int>> edges;
+    for (auto& pair : user_to_department) {
+        if (vertices.find(pair.first) == vertices.end() && pair.second == depID) {
+            BFShelper(pair.first, vertices, edges, depID);
+            connected_counter++;
+        }
+    }
+    return connected_counter;
 }
 
-// BFS(G):
-// 	Input: Graph, G
-// 	Output: A labeling of the edges on G as discovery and cross edges
-// 	foreach (Vertex v : G.vertices()): // O(n)
-// 		setLabel(v, UNEXPLORED)
-// 	foreach (Edge e : G.edges()): // O(m)
-// 		setLabel(e, UNEXPLORED)
-// 	foreach (Vertex v : G.vertices()): // O(n)
-// 		if getLabel(v) == UNEXPLORED:
-// 			BFS(G, v)
-// 			// add counter for connected components
+void Graph::BFShelper(int vertex, set<int>& vertices, set<pair<int, int>>& edges, int depID) {
+    std::queue<int> q;
+    vertices.insert(vertex);
+    q.push(vertex);
+    while (!q.empty()) {
+        int v = q.front();
+        q.pop();
+        vector<int> neighbors = network.at(vertex);
+        for (int neighbor : neighbors) {
+            if (vertices.find(neighbor) == vertices.end() && user_to_department.at(neighbor) == depID) {
+                if (v < neighbor) {
+                    edges.insert({v,neighbor});
+                } else {
+                    edges.insert({neighbor, v});
+                }
+                vertices.insert(neighbor);
+                q.push(neighbor);
+            }
+        }
+    }
+} 
 
-// BFS(G, v):
-// 	Queue q
-// 	setLabel(v, VISITED)
-// 	q.enqueue(v)
-	
-// 	while !q.empty(): // O(n)
-// 		v = q.dequeue()
-// 		foreach (Vertex w : G.adjacent(v)): // O(deg(V))
-// 			if getLabel(w) == UNEXPLORED:
-// 				setLabel(v, w, DISCOVERY)
-// 				setLabel(w, VISITED)
-// 				q.enqueue(w)
-// 			elseif getLabel(v, w) == UNEXPLORED:
-// 				setLabel(v, w, CROSS)
-// 				// means we have a cycle
 
 /**
 * @return a vector of Nodes that gives the path from user 1 to user 2, inclusive of user 2, if no path returns empty vector
@@ -118,4 +117,57 @@ vector<int> Graph::Djisktras(int user1, int user2) {
 */      
 bool Graph::isEularianCycle(int user) {
     return true;
+}
+//for testing
+string Graph::printNetwork() {
+    string toReturn = "";
+    for(map<int, vector<int>>::iterator it=network.begin(); it!=network.end(); ++it) {
+        toReturn += to_string(it->first) + " ";
+
+    }
+    return toReturn;
+}
+//for testing
+ int Graph::printUserToDepartment(int user) {
+    std::map<int,int>::iterator it;
+
+    it = user_to_department.find(user);
+    if(it != user_to_department.end()) {
+        return user_to_department.at(user);
+    }
+    return -1;
+
+ }
+ //for testing
+ string Graph::printUserNetwork(int user) {
+    string to_return = "";
+    std::map<int,vector<int>>::iterator it;
+
+    it = network.find(user);
+    if(it != network.end()) {
+        for(int n : network.at(user)) {
+            to_return += to_string(n) + " ";
+        }
+        return to_return;
+    }
+    return "userID does not exist";
+
+ }
+//for testing
+int Graph::getSize(){
+    return size;
+}
+bool Graph::hasEdge(int user1, int user2) {
+    std::map<int,vector<int>>::iterator it;
+
+    it = network.find(user1);
+    if (it != network.end()) {
+       vector<int> neighbors = network.at(user1);
+       for(size_t i = 0; i< neighbors.size(); i++) {
+            if (user2 == neighbors[i]) {
+                return true;
+            }
+       }
+    }
+    return false;
 }
