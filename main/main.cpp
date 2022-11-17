@@ -7,7 +7,7 @@ int main() {
     string department_file = "../email-data/email-Eu-core-department-labels.txt";
     
     //construct a graph with data
-    Graph g (email_file, department_file);
+    //Graph g (email_file, department_file);
 
     
     return 0;

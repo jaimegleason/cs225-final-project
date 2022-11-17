@@ -2,8 +2,8 @@
 //graph will have nodes (users), nodes will also have department label associated with it and a vector of edges to represent (communication) 
 
 #pragma once
-#include <map>
 #include <vector>
+#include <map>
 #include <string>
 #include <fstream>
 #include <queue>
@@ -33,7 +33,7 @@ class Graph {
 
     private:
         // userID to vector of userID
-        map<int, vector<int> > network;
+        map<int, vector<int>> network;
         // maps userID to departmentID 
         map<int, int> user_to_department;
         //number of users ids
