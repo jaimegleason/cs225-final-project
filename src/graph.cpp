@@ -5,7 +5,7 @@
 #include <fstream>
 #include <queue>
 #include <set>
-
+#include <iostream>
 using namespace std;
 /**
 * constructor to build graph from files
@@ -15,21 +15,21 @@ using namespace std;
 Graph::Graph(string& email_file, string& department_file) {
     ifstream file(department_file);
     string dep_line;
-    if (department_file.is_open()) {
-        while(getline(department_file, dep_line)) {
+    if (file.is_open()) {
+        while(getline(file, dep_line)) {
             string delimiter = " ";
             int userid = stoi(dep_line.substr(0, dep_line.find(delimiter)));
             int dep = stoi(dep_line.substr(dep_line.find(delimiter), dep_line.length()));
             insertNode(userid, dep);
         }
     }
-    ifstream file(email_file);
+    ifstream efile(email_file);
     string email_line;
-    if (email_file.is_open()) {
-        while (getline(email_file, email_line)) {
+    if (efile.is_open()) {
+        while (getline(efile, email_line)) {
             string delimiter = " ";
-            int user1 = int(email_line.substr(0, email_line.find(delimiter)));
-            int user2 = int(email_line.substr(email_line.find(delimiter), email_line.length()));
+            int user1 = stoi(email_line.substr(0, email_line.find(delimiter)));
+            int user2 = stoi(email_line.substr(email_line.find(delimiter), email_line.length()));
             insertEdge(user1, user2);
         }
     }
@@ -71,9 +71,37 @@ void Graph::insertEdge(int user1, int user2) {
 int Graph::BFS(int depID) {
     int connected_counter = 0;
     set<int> visited;
-    queue<int> q; 
+    queue<int> q;
     return 0;
 }
+
+// BFS(G):
+// 	Input: Graph, G
+// 	Output: A labeling of the edges on G as discovery and cross edges
+// 	foreach (Vertex v : G.vertices()): // O(n)
+// 		setLabel(v, UNEXPLORED)
+// 	foreach (Edge e : G.edges()): // O(m)
+// 		setLabel(e, UNEXPLORED)
+// 	foreach (Vertex v : G.vertices()): // O(n)
+// 		if getLabel(v) == UNEXPLORED:
+// 			BFS(G, v)
+// 			// add counter for connected components
+
+// BFS(G, v):
+// 	Queue q
+// 	setLabel(v, VISITED)
+// 	q.enqueue(v)
+	
+// 	while !q.empty(): // O(n)
+// 		v = q.dequeue()
+// 		foreach (Vertex w : G.adjacent(v)): // O(deg(V))
+// 			if getLabel(w) == UNEXPLORED:
+// 				setLabel(v, w, DISCOVERY)
+// 				setLabel(w, VISITED)
+// 				q.enqueue(w)
+// 			elseif getLabel(v, w) == UNEXPLORED:
+// 				setLabel(v, w, CROSS)
+// 				// means we have a cycle
 
 /**
 * @return a vector of Nodes that gives the path from user 1 to user 2, inclusive of user 2, if no path returns empty vector

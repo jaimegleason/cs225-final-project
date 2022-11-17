@@ -26,7 +26,7 @@ class Graph {
 
     private:
         // userID to vector of userID
-        map<int, vector<int>> network;
+        map<int, vector<int> > network;
         // maps userID to departmentID 
         map<int, int> user_to_department;
         //number of users ids
