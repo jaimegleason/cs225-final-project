@@ -1,9 +1,16 @@
-
-INCLUDES=-I src/ -I main/
-CXXFLAGS = -std=c++20 -g -O0 -Wall -Wextra -Werror -pedantic $(INCLUDES)
+INCLUDES=-I ../src/graph.h
+CXXFLAGS=-std=c++20 -g -fstandalone-debug -O0 -Wall -Wextra -Werror -pedantic $(INCLUDES)
 CXX=clang++
-main.o: ../main/main.cpp
-	$(CXX) $(CXXFLAGS) ../main/main.cpp -o main.o
 
-tests.o : ../tests/tests.cpp
-	$(CXX) $(CXXFLAGS) ../tests/tests.cpp -o tests.o
+clean:
+	rm -f bin/*
+
+main: ../main/main.cpp ../src/graph.cpp
+	$(CXX) $(CXXFLAGS) $^ -o main.o
+
+tests: ../tests/tests.cpp ../src/graph.cpp 
+	$(CXX) $(CXXFLAGS) $^ -o tests.o
+
+
+.DEFAULT_GOAL := tests
+.PHONY: tests clean main

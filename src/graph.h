@@ -37,7 +37,7 @@ class Graph {
         // maps userID to departmentID 
         map<int, int> user_to_department;
         //number of users ids
-        size_t size;
+        size_t size = 0;
         // helper functions
         void BFShelper(int vertex, set<int>& vertices, set<pair<int, int>>& edges, int depID);
 

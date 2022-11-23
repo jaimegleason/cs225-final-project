@@ -1,17 +1,19 @@
 //not sure if this path is correct;
-#include <catch2/catch_test_macros.hpp>
+#define CATCH_CONFIG_MAIN
+#include "./Catch2/src/catch2/catch_test_macros.hpp"
+
+//Catch2/src/catch2/catch_test_macros.hpp
+
 #include "../src/graph.h"
 #include <queue>
-#include <map>
+#include <map> 
 
 #include <iostream>
 #include <vector>
 #include <string>
 using namespace std;
 
-string emails = "./dummyUsers.txt";
-string deps = "./dummyDept.txt";
-Graph test = Graph(emails, deps);
+
 
 //Dummy Users
 // 1 4
@@ -25,7 +27,11 @@ Graph test = Graph(emails, deps);
 // 2 2
 // 3 3
 // 4 1 
-TEST_CASE("Graph Constructor Works", "[Constructor]") {
+
+TEST_CASE("Simple Graph Constructor Works", "[Constructor]") {
+    string emails = "./dummyUsers.txt";
+    string deps = "./dummyDept.txt";
+    Graph test = Graph(emails, deps);
 
     REQUIRE(test.getSize() == 4);
     REQUIRE(test.printNetwork() == "1 2 3 4 ");
@@ -38,6 +44,9 @@ TEST_CASE("Graph Constructor Works", "[Constructor]") {
 }
 
 TEST_CASE("BFS Connected Components", "[Algorithms][BFS]") {
+    string emails = "./dummyUsers.txt";
+    string deps = "./dummyDept.txt";
+    Graph test = Graph(emails, deps);
     
     REQUIRE(test.BFS(1) == 1);
     REQUIRE(test.BFS(2) == 1);

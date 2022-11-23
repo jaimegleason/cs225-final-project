@@ -44,6 +44,7 @@ void Graph::insertNode(int user, int dep) {
     vector<int> v;
     user_to_department.insert({user, dep});
     network.insert({user, v});
+    size++;
 }
 
 /**
@@ -56,7 +57,7 @@ void Graph::insertEdge(int user1, int user2) {
     if (network.find(user1) == network.end()) {
         return;
     }
-    vector<int> connections = network[user1];
+    vector<int>& connections = network[user1];
     // maybe check for multiple instances? 
     connections.push_back(user2);
 }
@@ -107,17 +108,32 @@ void Graph::BFShelper(int vertex, set<int>& vertices, set<pair<int, int>>& edges
 * @param user1 user 1
 * @param user2 user 2
 */ 
-vector<int> Graph::Djisktras(int user1, int user2) {
-    return vector<int>();
-}
+// DijkstraSSSP(G, s):
+// foreach (Vertex v : G):
+//      d[v] = +inf
+//      p[v] = NULL
+// d[s] = 0
+// PriorityQueue Q // min distance, defined by d[v]
+// Q.buildHeap(G.vertices())
+// Graph T // "labeled set"
+// repeat n times:
+//     Vertex u = Q.removeMin()
+//     T.add(u)
+//     foreach (Vertex v : neighbors of u not in T):
+//          if cost(u, v) + d[u] < d[v]:
+//          d[v] = cost(u, v) + d[u]
+//          p[v] = m
+// vector<int> Graph::Djisktras(int user1, int user2) {
+//     return vector<int>();
+// }
 
 /**
 * @return boolean if Eularian Cycle exists
 * @param user is start/end point
 */      
-bool Graph::isEularianCycle(int user) {
-    return true;
-}
+// bool Graph::isEularianCycle(int user) {
+//     return true;
+// }
 //for testing
 string Graph::printNetwork() {
     string toReturn = "";
