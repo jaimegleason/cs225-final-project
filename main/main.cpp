@@ -12,19 +12,20 @@ int main() {
     Graph test = Graph(emails, deps);
     
     cout<< "simple graph constructor test cases" << endl;
-    cout << (test.getSize() == 4) << endl; // true
-    cout << (test.printNetwork() == "1 2 3 4 ") << endl; // true
-    cout << (test.printUserToDepartment(1) == 1) << endl; //true
-    cout << (test.printUserToDepartment(5) == -1) << endl; //true
-    cout << (test.printUserNetwork(1) == "4 2 ") << endl; //true
-    cout << (test.hasEdge(1,2) == true) << endl; //true
-    cout << (test.hasEdge(2,1) == false) << endl; // true
+    cout << (test.getSize() == 10) << endl; 
+    cout << (test.printNetwork() == "1 2 3 4 5 6 7 8 9 10 ") << endl; 
+    cout << (test.printUserToDepartment(1) == 100) << endl; 
+    cout << (test.printUserToDepartment(11) == -1) << endl; 
+    cout << (test.printUserNetwork(1) == "5 4 ") << endl; 
+    cout << (test.hasEdge(1,5) == true) << endl; 
+    cout << (test.hasEdge(6,1) == false) << endl; 
 
 
     cout << "simple BFS Tests" << endl;
-    cout << (test.BFS(1) == 1) << endl;
-    cout << (test.BFS(2) == 1) << endl;
-    cout << (test.BFS(3) == 1) << endl;
+    cout << (test.BFS(100) == 2) << endl;
+    cout << (test.BFS(200) == 2) << endl;
+    cout << (test.BFS(300) == 1) << endl;
+    cout << (test.BFS(568) == -1) << endl;
     
     return 0;
 }

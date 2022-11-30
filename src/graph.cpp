@@ -6,13 +6,14 @@
 #include <queue>
 #include <set>
 #include <iostream>
+#include <limits>
 using namespace std;
 /**
 * constructor to build graph from files
 * @param email_file txt file with all edges, separated by spaces
 * @param department_file txt file with user id to department id, separated by spaces
 */
-Graph::Graph(string& email_file, string& department_file) {
+Graph::Graph(string email_file, string department_file) {
     ifstream file(department_file);
     string dep_line;
     if (file.is_open()) {
@@ -21,6 +22,7 @@ Graph::Graph(string& email_file, string& department_file) {
             int userid = stoi(dep_line.substr(0, dep_line.find(delimiter)));
             int dep = stoi(dep_line.substr(dep_line.find(delimiter), dep_line.length()));
             insertNode(userid, dep);
+            departments.insert(dep);
         }
     }
     ifstream efile(email_file);
@@ -31,6 +33,7 @@ Graph::Graph(string& email_file, string& department_file) {
             int user1 = stoi(email_line.substr(0, email_line.find(delimiter)));
             int user2 = stoi(email_line.substr(email_line.find(delimiter), email_line.length()));
             insertEdge(user1, user2);
+            insertEdge(user2, user1);
         }
     }
 }
@@ -65,9 +68,12 @@ void Graph::insertEdge(int user1, int user2) {
 /**
 * BFS traversal, will count number of connected components based on department ID
 * @param depID department ID
-* @return number of connected components
+* @return number of connected components, -1 if department doesn't exist
 */
 int Graph::BFS(int depID) {
+    if (departments.find(depID) == departments.end()) {
+        return -1;
+    }
     int connected_counter = 0;
     set<int> vertices;
     set<pair<int, int>> edges;
@@ -87,7 +93,7 @@ void Graph::BFShelper(int vertex, set<int>& vertices, set<pair<int, int>>& edges
     while (!q.empty()) {
         int v = q.front();
         q.pop();
-        vector<int> neighbors = network.at(vertex);
+        vector<int> neighbors = network.at(v);
         for (int neighbor : neighbors) {
             if (vertices.find(neighbor) == vertices.end() && user_to_department.at(neighbor) == depID) {
                 if (v < neighbor) {
@@ -123,9 +129,47 @@ void Graph::BFShelper(int vertex, set<int>& vertices, set<pair<int, int>>& edges
 //          if cost(u, v) + d[u] < d[v]:
 //          d[v] = cost(u, v) + d[u]
 //          p[v] = m
-// vector<int> Graph::Djisktras(int user1, int user2) {
-//     return vector<int>();
-// }
+vector<int> Graph::Djisktras(int user1, int user2) {
+    
+    std::vector<int> distances(size);
+    std::map<int, int> previous;
+    std::queue<int> q;
+    std::set<int> visited;
+    for (auto& pair : user_to_department) {
+        distances[pair.first] = std::numeric_limits<int>::max();
+        previous[pair.first] = -1;
+    }
+    distances[user1] = 0;
+    q.push(user1);
+    while (q.front() != user2) {
+        int curr = q.front();
+        q.pop();
+        for (int neighbor: network.at(curr)) {
+            if (visited.find(neighbor) == visited.end()) {
+                if (1+distances[curr] < distances[neighbor]) {
+                    distances[neighbor] = 1 + distances[curr];
+                    previous[neighbor] = curr;
+                }
+                q.push(neighbor);
+            }
+        }
+        visited.insert(curr);
+    }
+    // extract path from previous
+    // while 
+    // return path
+    // *determine what to do if user2 is not found*
+    std::vector<int> to_return;
+    int position = user2;
+    while (position != user1) {
+        to_return.push_back(position);
+        position = previous[position];
+    }
+    to_return.push_back(user1);
+    std::reverse(to_return.begin(), to_return.end());
+    
+    return to_return;
+}
 
 /**
 * @return boolean if Eularian Cycle exists
@@ -134,6 +178,7 @@ void Graph::BFShelper(int vertex, set<int>& vertices, set<pair<int, int>>& edges
 // bool Graph::isEularianCycle(int user) {
 //     return true;
 // }
+
 //for testing
 string Graph::printNetwork() {
     string toReturn = "";
