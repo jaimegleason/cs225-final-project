@@ -4,7 +4,8 @@ src: graph.h and graph.cpp
 main: main.cpp to call/test code
 
 HOW TO RUN:
-make exec
+make 
+./main.o
 
 
 ## Leading Question 
