@@ -153,6 +153,11 @@ vector<int> Graph::Djisktras(int user1, int user2) {
     distances[user1] = 0;
     q.push(user1);
     while (q.front() != user2) {
+        /*
+        if(q.empty()) {
+            return -1; 
+        }
+        */
         int curr = q.front();
         q.pop();
         for (int neighbor: network.at(curr)) {
@@ -194,8 +199,11 @@ vector<int> Graph::Djisktras(int user1, int user2) {
     else, go to step 5
 
 std::vector<int> Graph::findEulerianCycle(int start) {
-    std::vector
-    return true;
+    std::vector<int> cycle;
+    if (isEulerian()) {
+        hierholzerHelper()
+    }
+    return cycle;
 }
 
 void hierholzerHelper(int src, std::vector<int>& cycle) {
