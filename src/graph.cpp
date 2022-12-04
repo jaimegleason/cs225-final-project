@@ -7,6 +7,7 @@
 #include <set>
 #include <iostream>
 #include <limits>
+#include <algorithm>
 using namespace std;
 /**
 * constructor to build graph from files
@@ -23,6 +24,7 @@ Graph::Graph(string email_file, string department_file) {
             int dep = stoi(dep_line.substr(dep_line.find(delimiter), dep_line.length()));
             insertNode(userid, dep);
             departments.insert(dep);
+            users.insert(userid);
         }
     }
     ifstream efile(email_file);
@@ -129,14 +131,23 @@ void Graph::BFShelper(int vertex, set<int>& vertices, set<pair<int, int>>& edges
 //          if cost(u, v) + d[u] < d[v]:
 //          d[v] = cost(u, v) + d[u]
 //          p[v] = m
+
 vector<int> Graph::Djisktras(int user1, int user2) {
+    //check to make sure user1 and user 2 are in the dataset
+    std::vector<int> to_return;
+    if (users.find(user1) == users.end() || users.find(user2) == users.end()) {
+       to_return.push_back(-1);
+       return to_return;
+    }
     
-    std::vector<int> distances(size);
+    std::vector<int> distances;
+    for(size_t i = 0; i < size; i++) {
+        distances.push_back(::numeric_limits<int>::max());
+    }
     std::map<int, int> previous;
     std::queue<int> q;
     std::set<int> visited;
     for (auto& pair : user_to_department) {
-        distances[pair.first] = std::numeric_limits<int>::max();
         previous[pair.first] = -1;
     }
     distances[user1] = 0;
@@ -155,11 +166,7 @@ vector<int> Graph::Djisktras(int user1, int user2) {
         }
         visited.insert(curr);
     }
-    // extract path from previous
-    // while 
-    // return path
     // *determine what to do if user2 is not found*
-    std::vector<int> to_return;
     int position = user2;
     while (position != user1) {
         to_return.push_back(position);
@@ -175,9 +182,38 @@ vector<int> Graph::Djisktras(int user1, int user2) {
 * @return boolean if Eularian Cycle exists
 * @param user is start/end point
 */      
-// bool Graph::isEularianCycle(int user) {
-//     return true;
-// }
+/*
+1. Start at an arbitrary vertex
+2. Follow the outgoing edges of the start vertex,
+    traverse edge if not already done
+3. Repeat until at a vertex with no untraversed edges
+4. Add stuck-vertex to stack
+5. Backtrack to previous vertex
+6. If edges to traverse, go to step 2
+7. If no edges to traverse, stack holds complete Eulerian cycle
+    else, go to step 5
+
+std::vector<int> Graph::findEulerianCycle(int start) {
+    std::vector
+    return true;
+}
+
+void hierholzerHelper(int src, std::vector<int>& cycle) {
+    map<int, vector<int>> dummy_network = network;
+    while (!dummy_network.at(src).empty()) {
+        int dest = dummy_network.at(src).front();
+        dummy_network.at(src).erase(dummy_network.at(src).begin());
+        for (int i = 0; i < network.at(dest).size(); ++i) {
+            if (network.at(dest).at(i) == src) {
+                dummy_network.at(dest).erase(dummy_network.at(dest).begin());
+                break;
+            }
+        }
+        hierholzerHelper(dest, cycle);
+    }
+    cycle.insert(cycle.begin(), src);
+}
+*/ 
 
 //for testing
 string Graph::printNetwork() {

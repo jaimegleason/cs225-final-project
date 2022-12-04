@@ -40,6 +40,8 @@ class Graph {
         size_t size = 0;
         // department ids
         set<int> departments;
+        // user ids
+        set<int> users;
         // helper functions
         void BFShelper(int vertex, set<int>& vertices, set<pair<int, int>>& edges, int depID);
 
