@@ -198,22 +198,34 @@ vector<int> Graph::Djisktras(int user1, int user2) {
 7. If no edges to traverse, stack holds complete Eulerian cycle
     else, go to step 5
 
+bool Graph::isEulerian() {
+    int oddVertices = 0;
+    for (std::pair<int, std::vector<int>& pair : network) {
+        if (pair.second.size() == 0) { return false; }
+        if (pair.second.size() % 2 != 0) {
+            ++oddVertices;
+            if (oddVertices > 2) { return false; }
+        }
+    }
+    return oddVertices == 2;
+}
+
 std::vector<int> Graph::findEulerianCycle(int start) {
     std::vector<int> cycle;
     if (isEulerian()) {
-        hierholzerHelper()
+        hierholzerHelper(start, cycle);
     }
     return cycle;
 }
 
-void hierholzerHelper(int src, std::vector<int>& cycle) {
+void Graph::hierholzerHelper(int src, std::vector<int>& cycle) {
     map<int, vector<int>> dummy_network = network;
     while (!dummy_network.at(src).empty()) {
         int dest = dummy_network.at(src).front();
         dummy_network.at(src).erase(dummy_network.at(src).begin());
         for (int i = 0; i < network.at(dest).size(); ++i) {
             if (network.at(dest).at(i) == src) {
-                dummy_network.at(dest).erase(dummy_network.at(dest).begin());
+                dummy_network.at(dest).erase(dummy_network.at(dest).begin() + i);
                 break;
             }
         }
