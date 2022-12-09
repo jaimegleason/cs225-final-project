@@ -116,23 +116,7 @@ void Graph::BFShelper(int vertex, set<int>& vertices, set<pair<int, int>>& edges
 * @param user1 user 1
 * @param user2 user 2
 */ 
-// DijkstraSSSP(G, s):
-// foreach (Vertex v : G):
-//      d[v] = +inf
-//      p[v] = NULL
-// d[s] = 0
-// PriorityQueue Q // min distance, defined by d[v]
-// Q.buildHeap(G.vertices())
-// Graph T // "labeled set"
-// repeat n times:
-//     Vertex u = Q.removeMin()
-//     T.add(u)
-//     foreach (Vertex v : neighbors of u not in T):
-//          if cost(u, v) + d[u] < d[v]:
-//          d[v] = cost(u, v) + d[u]
-//          p[v] = m
-
-vector<int> Graph::Djisktras(int user1, int user2) {
+vector<int> Graph::Dijkstras(int user1, int user2) {
     //check to make sure user1 and user 2 are in the dataset
     std::vector<int> to_return;
     if (users.find(user1) == users.end() || users.find(user2) == users.end()) {
@@ -152,7 +136,7 @@ vector<int> Graph::Djisktras(int user1, int user2) {
     }
     distances[user1] = 0;
     q.push(user1);
-    while (q.front() != user2) {
+    while (!q.empty() && q.front() != user2) {
         /*
         if(q.empty()) {
             return -1; 
@@ -171,6 +155,10 @@ vector<int> Graph::Djisktras(int user1, int user2) {
         }
         visited.insert(curr);
     }
+    if(q.empty()) {
+        to_return.push_back(-1); 
+        return to_return;
+    }
     // *determine what to do if user2 is not found*
     int position = user2;
     while (position != user1) {
@@ -183,10 +171,7 @@ vector<int> Graph::Djisktras(int user1, int user2) {
     return to_return;
 }
 
-/**
-* @return boolean if Eularian Cycle exists
-* @param user is start/end point
-*/      
+
 /*
 1. Start at an arbitrary vertex
 2. Follow the outgoing edges of the start vertex,
@@ -197,43 +182,55 @@ vector<int> Graph::Djisktras(int user1, int user2) {
 6. If edges to traverse, go to step 2
 7. If no edges to traverse, stack holds complete Eulerian cycle
     else, go to step 5
-
+*/
+/**
+* @return true if Eularian Cycle exists, else return false
+*/     
 bool Graph::isEulerian() {
     int oddVertices = 0;
-    for (std::pair<int, std::vector<int>& pair : network) {
+    for (auto& pair : network) {
         if (pair.second.size() == 0) { return false; }
         if (pair.second.size() % 2 != 0) {
             ++oddVertices;
             if (oddVertices > 2) { return false; }
         }
     }
-    return oddVertices == 2;
+    return oddVertices == 2 || oddVertices == 0;
 }
 
 std::vector<int> Graph::findEulerianCycle(int start) {
     std::vector<int> cycle;
+    if (users.find(start) == users.end()) { 
+        cycle.push_back(-1);
+        return cycle; 
+    }
     if (isEulerian()) {
-        hierholzerHelper(start, cycle);
+        map<int, vector<int>> dummy_network = network;
+        hierholzerHelper(start, cycle, dummy_network);
+    }
+    std::reverse(cycle.begin(), cycle.end());
+    
+    if (cycle.empty()) {
+        cycle.push_back(-1);
     }
     return cycle;
 }
 
-void Graph::hierholzerHelper(int src, std::vector<int>& cycle) {
-    map<int, vector<int>> dummy_network = network;
+void Graph::hierholzerHelper(int src, std::vector<int>& cycle, map<int, vector<int>>& dummy_network) {
     while (!dummy_network.at(src).empty()) {
         int dest = dummy_network.at(src).front();
         dummy_network.at(src).erase(dummy_network.at(src).begin());
-        for (int i = 0; i < network.at(dest).size(); ++i) {
-            if (network.at(dest).at(i) == src) {
+        for (size_t i = 0; i < dummy_network.at(dest).size(); ++i) {
+            if (dummy_network.at(dest).at(i) == src) {
                 dummy_network.at(dest).erase(dummy_network.at(dest).begin() + i);
                 break;
             }
         }
-        hierholzerHelper(dest, cycle);
+        hierholzerHelper(dest, cycle, dummy_network);
     }
-    cycle.insert(cycle.begin(), src);
+    cycle.push_back(src);
+    // cycle.insert(cycle.begin(), src);
 }
-*/ 
 
 //for testing
 string Graph::printNetwork() {

@@ -19,9 +19,10 @@ class Graph {
         void insertNode(int user, int dep);
         void insertEdge(int user1, int user2);
         int BFS(int depID);
-        vector<int> Djisktras(int user1, int user2);
-        bool isEularianCycle(int user);
-       
+        vector<int> Dijkstras(int user1, int user2);
+        std::vector<int> findEulerianCycle(int start);
+        void hierholzerHelper(int src, std::vector<int>& cycle, map<int, vector<int>>& dummy_network);
+        bool isEulerian();
        
         //for testing purposes
         string printNetwork();
@@ -44,5 +45,6 @@ class Graph {
         set<int> users;
         // helper functions
         void BFShelper(int vertex, set<int>& vertices, set<pair<int, int>>& edges, int depID);
+        
 
 };

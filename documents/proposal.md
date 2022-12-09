@@ -5,8 +5,6 @@ We are interested in seeing how emails demonstrate relationships within an organ
 
 ## Dataset Acquisition
 
-
-
 ### Data Format
 For our project, we have chosen to use the email-Eu-core network, included in Stanford University’s dataset collection. This dataset represents the research institution’s employees as nodes and the emails sent between them as edges. In total, there are 1005 nodes and 25571 edges in the dataset. In addition to the individual IDs of each member, the nodes also include an ID corresponding to their department in the institution. All of the data will be used in our graph structure, although users will be able to filter their connection queries by department input. For example, one could count the connected components specifically in the department ID’d by 5.
 
@@ -36,4 +34,3 @@ Complete BFS Algorithm (11/21)
 Complete Eulerian cycle Algorithm (11/27)
 
 Ensure Github repo is clear and readable, write up, and final presentation (12/8)
-

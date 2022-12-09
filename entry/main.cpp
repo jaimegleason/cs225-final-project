@@ -5,54 +5,49 @@
 using namespace std;
 
 int main() {
-    //Test BFS
-    string emails = "../tests/dummyUsers.txt";
-    string deps = "../tests/dummyDept.txt";
-    Graph test = Graph(emails, deps);
+   //test
+   string emails = "../tests/dummyUsers.txt";
+   string deps = "../tests/dummyDept.txt";
+   Graph test = Graph(emails, deps);
+   //actual
+   string eu_emails = "../email-data/email-Eu-core.txt";
+   string eu_depts = "../email-data/email-Eu-core-department-labels.txt";
+   Graph eu = Graph(eu_emails, eu_depts);
+   cout << "BFS Algorithm" << endl;
+   int dep = 0;
+   cout << "Enter a department ID from 0 - 41: ";
+   cin >> dep;
+   cout << "\nNumber of Connected Components in Department " << dep << ": " << eu.BFS(dep) << endl;
+   
+   cout << "Dijkstra's Algorithm" << endl;
+   int user1 = 0;
+   int user2 = 0;
+   cout << "Enter a User ID from 0 - 1004 for Start : ";
+   cin >> user1;
+   cout << "\nEnter a User ID from 0 - 1004 for End : ";
+   cin >> user2;
+   vector<int> eu_vect1 = eu.Dijkstras(user1, user2);
+   cout << "\nShortest Path from " << user1 <<" to " << user2 << ": ";
+   for(size_t i = 0; i < eu_vect1.size(); i++) {
+      cout << eu_vect1[i] << " ";
+   }
+   cout << "" << endl;
 
-    cout<< "simple graph constructor test cases" << endl;
-    cout << (test.getSize() == 10) << endl; 
-    cout << (test.printNetwork() == "1 2 3 4 5 6 7 8 9 10 ") << endl; 
-    cout << (test.printUserToDepartment(1) == 100) << endl; 
-    cout << (test.printUserToDepartment(12) == -1) << endl; 
-    cout << (test.printUserNetwork(1) == "5 4 ") << endl; 
-    cout << (test.hasEdge(1,5) == true) << endl; 
-    cout << (test.hasEdge(6,1) == false) << endl; 
+   cout << "Eulerian Path Algorithm" << endl;
+   int start = 0;
+   cout << "Enter a User ID from 0 - 1004 for Start : ";
+   cin >> start;
+   cout << "" << endl;
+   vector<int> eu_eulerian = eu.findEulerianCycle(start);
+   for(size_t i = 0; i < eu_eulerian.size(); i++) {
+      if (eu_eulerian[i] == -1) {
+         cout << "Eulerian Cycle does not exist" << endl;
+         break;
+      }
+      cout << eu_eulerian[i] << " ";
+   }
+   cout << "" << endl;
+   cout << "Re run program to try other numbers!" << endl;
 
-
-    cout << "simple BFS Tests" << endl;
-    cout << (test.BFS(100) == 2) << endl;
-    cout << (test.BFS(200) == 2) << endl;
-    cout << (test.BFS(300) == 1) << endl;
-    cout << (test.BFS(568) == -1) << endl;
-    //Implementing BFS
-    string eu_emails = "../email-data/email-Eu-core.txt";
-    string eu_depts = "../email-data/email-Eu-core-department-labels.txt";
-    Graph eu_BFS = Graph(eu_emails, eu_depts);
-    
-    cout << "Email Dataset Output" << endl;
-    cout << "Number of Connected Components in Department 1 : " << eu_BFS.BFS(1) << endl;
-    cout << "Number of Connected Components in Department 7 : " << eu_BFS.BFS(7) << endl;
-    cout << "Number of Connected Components in Department 23 : " << eu_BFS.BFS(23) << endl;
-    cout << "Number of Connected Components in Department 4 : " << eu_BFS.BFS(4) << endl;
-
-    cout << "Testing Djikstra's Algorithm With Path That Exists" << endl;
-    vector<int> dijkstras_test1 = test.Djisktras(1,2);
-    cout << "Path from User 1 to 2 : ";
-    for(size_t i = 0; i < dijkstras_test1.size(); i++) {
-       cout << dijkstras_test1[i] << " ";
-    }
-    vector<int> dijkstras_test2 = test.Djisktras(7,1);
-    cout << "Path from User 7 to 1 : ";
-    for(size_t i = 0; i < dijkstras_test2.size(); i++) {
-       cout << dijkstras_test2[i] << " ";
-    }
-    cout << "Testing Djikstra's Algorithm With UserID not found" << endl;
-    vector<int> dijkstras_test3 = test.Djisktras(1, 445);
-    //should return -1
-    cout << dijkstras_test3[0] << endl;
-
-
-
-    return 0;
+   return 0;
 }

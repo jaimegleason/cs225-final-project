@@ -1,2 +1,2 @@
-/usr/bin/ar qc libsrc.a 
+/usr/bin/ar qc libsrc.a CMakeFiles/src.dir/graph.cpp.o
 /usr/bin/ranlib libsrc.a
