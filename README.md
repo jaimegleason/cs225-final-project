@@ -3,10 +3,15 @@
 ## Organization
 
 build: MakeFiles and object files
-documents: contract, proposal, results, and presentation video
+
+documents: contract, proposal, results, and presentation slides
+
 email-data: email-data files
+
 entry: main.cpp to call code
+
 src: graph.h and graph.cpp
+
 tests: tests.cpp, dummy data, and catch2 files to test code
 
 
