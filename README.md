@@ -30,7 +30,7 @@ make
 ```
 followed by
 ```bash
-/.main
+./main
 ```
 
 Then, the program will prompt the user to enter search queries for the algorithms we have written. 
