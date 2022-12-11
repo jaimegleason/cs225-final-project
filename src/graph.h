@@ -30,13 +30,14 @@ class Graph {
         string printUserNetwork(int user);
         int getSize();
         bool hasEdge(int user1, int user2); 
+        map<int, int> user_to_department;
+
         
 
     private:
         // userID to vector of userID
         map<int, vector<int>> network;
         // maps userID to departmentID 
-        map<int, int> user_to_department;
         //number of users ids
         size_t size = 0;
         // department ids

@@ -1,4 +1,4 @@
-# Install script for directory: /workspaces/cs225/cs225-final-project
+# Install script for directory: /workspaces/CS225/Final Project/cs225-final-project
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,8 +44,8 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/workspaces/cs225/cs225-final-project/build/lib/cmake_install.cmake")
-  include("/workspaces/cs225/cs225-final-project/build/src/cmake_install.cmake")
+  include("/workspaces/CS225/Final Project/cs225-final-project/build/lib/cmake_install.cmake")
+  include("/workspaces/CS225/Final Project/cs225-final-project/build/src/cmake_install.cmake")
 
 endif()
 
@@ -57,5 +57,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/workspaces/cs225/cs225-final-project/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/workspaces/CS225/Final Project/cs225-final-project/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
